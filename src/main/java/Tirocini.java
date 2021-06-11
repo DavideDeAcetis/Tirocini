@@ -2,11 +2,12 @@ import java.sql.*;
 import java.util.Scanner;
 
 import Functions.Liste;
+import Functions.Offerte;
 import Utility.Colors;
 import Functions.Registrazione;
 import  Utility.Stampa;
 
-class Tirocini {
+class Tirocini implements Colors{
     public static void main(String[] args) {
         try {
             Connection con = DriverManager.getConnection(
@@ -26,21 +27,41 @@ class Tirocini {
                         try {
                             int studente_id = Registrazione.registrazione_studente(con);
                             if (studente_id == -1){
-                                System.out.println(Colors.RED + "Operazione annullata dall'utente." + Colors.RESET);
+                                System.out.println(RED + "Operazione annullata dall'utente." + RESET);
                             }
-
                         } catch (Exception e){
-                            System.out.println(Colors.RED + "ERRORE: " + e + Colors.RESET);
+                            System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
                     case 2:     //Registrazione azienda
-
+                        try {
+                            int azienda_id = Registrazione.registrazione_azienda(con);
+                            if (azienda_id == -1){
+                                System.out.println(RED + "Operazione annullata dall'utente." + RESET);
+                            }
+                        } catch (Exception e){
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                        }
                         break;
-                    case 3:
-                        // Perform "decrypt number" case.
+                    case 3:     //Inserimento di una nuova offerta di tirocinio
+                        try {
+                            int offerta_id = Offerte.aggiungi_offerta(con);
+                            if (offerta_id == -1){
+                                System.out.println(RED + "Operazione annullata dall'utente." + RESET);
+                            }
+                        } catch (Exception e){
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                        }
                         break;
-                    case 4:
-                        // Perform "quit" case.
+                    case 4:     //Annullamento di un'offerta di tirocinio
+                        try {
+                            int offerta_id = Offerte.annulla_offerta(con);
+                            if (offerta_id == -1){
+                                System.out.println(RED + "Operazione annullata dall'utente." + RESET);
+                            }
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                        }
                         break;
                     case 5:
                         // Perform "original number" case.
@@ -79,11 +100,11 @@ class Tirocini {
 
                         break;
                     default:
-                        System.out.println(Colors.RED + "ERRORE: Input non valido" + Colors.RESET);
+                        System.out.println(RED + "ERRORE: Input non valido" + RESET);
                 }
 
                 if (!exit) {
-                    System.out.println(Colors.GREEN + "Premere" + Colors.RED + " 1 " + Colors.GREEN + "per continuare o" + Colors.RED + " 0 " + Colors.GREEN + "per uscire" + Colors.RESET);
+                    System.out.println(GREEN + "Premere" + RED + " 1 " + GREEN + "per continuare o" + RED + " 0 " + GREEN + "per uscire" + RESET);
                     if (scanner.nextInt() == 0) {
                         exit = true;
                     }
@@ -91,7 +112,7 @@ class Tirocini {
             }
             con.close();
         } catch (Exception e) {
-            System.out.println(Colors.RED + "ERRORE: " + e + Colors.RESET);
+            System.out.println(RED + "ERRORE: " + e + RESET);
         }
     }
 }

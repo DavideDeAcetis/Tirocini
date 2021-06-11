@@ -1,16 +1,14 @@
 package Functions;
 
 import Utility.Colors;
-
 import java.sql.*;
 
-public class Liste {
+public class Liste implements Colors{
     public static void lista_aziende (Connection con) throws SQLException {
-        System.out.println(Colors.CYAN + "Lista delle aziende con offerte di tirocinio ancora aperte:" + Colors.RESET );
+        System.out.println(CYAN + "Lista delle aziende con offerte di tirocinio ancora aperte:" + RESET );
         System.out.println("---------------------------------------------------------------- ");
 
         CallableStatement stmt = con.prepareCall("{CALL lista_aziende_con_offerte()}");
-        /*stmt.registerOutParameter(1, Types.INTEGER);*/
         stmt.execute();
         ResultSet rs = stmt.getResultSet();
         System.out.println("ID - Nome azienda");
@@ -24,7 +22,7 @@ public class Liste {
     }
 
     public static void lista_tirocini_attivi (Connection con) throws SQLException {
-        System.out.println(Colors.CYAN + "Lista dei tirocini attualmente in svolgimento:" + Colors.RESET );
+        System.out.println(CYAN + "Lista dei tirocini attualmente in svolgimento:" + RESET );
         System.out.println("---------------------------------------------------------------- ");
 
         CallableStatement stmt = con.prepareCall("{CALL lista_tirocini_attivi()}");
