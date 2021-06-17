@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.Scanner;
 import Utility.Colors;
 
-public class Offerte implements Colors{
+public class Offerta implements Colors{
     public static int aggiungi_offerta(Connection con) throws SQLException {
         System.out.println(CYAN + "Menu per l'inserimento di una nuova offerta di tirocinio, inserisci" + RED + " 0 " + CYAN + "in qualsiasi momento per annullare la procedura." +
                 "\nI campi contrassegnati con " + RED + "*" + CYAN + " sono obligatori." + RESET );
@@ -114,34 +114,41 @@ public class Offerte implements Colors{
         String input;
         System.out.println(CYAN + "Inserisci la partita IVA dell'azienda che ha creato l'offerta: " + RESET);
         input = scanner.nextLine();
+        int id_offerta = -1;
 
-        Statement stmt = con.createStatement();
-        ResultSet rs2 = stmt.executeQuery("SELECT count(*) FROM offerta o, azienda a WHERE o.azienda_id = a.id AND a.partita_iva = " + input + " AND o.visibile = 1");
-        rs2.next();
-        int[] id_list = new int[rs2.getInt(1)];
-        rs2.close();
+        try {
+            con.setAutoCommit(false);   //in modo da eseguire una transazione
 
-        System.out.println(CYAN + "Inserisci il numero corrispondente al titolo dell'offerta da annullare: " + RESET);
-        System.out.println("---------------------------------------------------------------- ");
+            Statement stmt = con.createStatement();
+            ResultSet rs2 = stmt.executeQuery("SELECT count(*) FROM offerta o, azienda a WHERE o.azienda_id = a.id AND a.partita_iva = " + input + " AND o.visibile = 1");
+            rs2.next();
+            int[] id_list = new int[rs2.getInt(1)];
+            rs2.close();
 
-        ResultSet rs1 = stmt.executeQuery("SELECT o.id, o.titolo FROM offerta o, azienda a WHERE o.azienda_id = a.id AND a.partita_iva = " + input + " AND o.visibile = 1");
-        int count = 1;
-        while (rs1.next()){
-            id_list[count - 1] = rs1.getInt(1);
-            System.out.println(RED + count++ + ") " + GREEN + rs1.getString(1) + " - " + rs1.getString(2) + RESET);
+            System.out.println(CYAN + "Inserisci il numero corrispondente al titolo dell'offerta da annullare: " + RESET);
+            System.out.println("---------------------------------------------------------------- ");
+
+            ResultSet rs1 = stmt.executeQuery("SELECT o.id, o.titolo FROM offerta o, azienda a WHERE o.azienda_id = a.id AND a.partita_iva = " + input + " AND o.visibile = 1");
+            int count = 1;
+            while (rs1.next()){
+                id_list[count - 1] = rs1.getInt(1);
+                System.out.println(RED + count++ + ") " + GREEN + rs1.getString(1) + " - " + rs1.getString(2) + RESET);
+            }
+            input = scanner.nextLine();
+            id_offerta = id_list[Integer.parseInt(input)-1];
+            CallableStatement cstmt = con.prepareCall("CALL annullamento_offerta(?)");
+            cstmt.setInt(1, id_offerta);
+            cstmt.execute();
+            stmt.close();
+            rs1.close();
+
+            System.out.println(CYAN + "L'offerta selezionata è stata annullata con successo!" + RESET);
+
+            con.commit();
+        } catch(SQLException e) {
+            // in case of exception, rollback the transaction
+            con.rollback();
         }
-
-        input = scanner.nextLine();
-        int id_offerta = id_list[Integer.parseInt(input)-1];
-        CallableStatement cstmt = con.prepareCall("CALL annullamento_offerta(?)");
-        cstmt.setInt(1, id_offerta);
-        cstmt.execute();
-
-        System.out.println(CYAN + "L'offerta selezionata è stata annullata con successo!" + RESET);
-
-        stmt.close();
-        rs1.close();
-
         return id_offerta;
     }
 }

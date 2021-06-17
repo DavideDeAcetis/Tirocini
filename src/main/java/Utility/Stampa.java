@@ -1,10 +1,5 @@
 package Utility;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 public class Stampa implements Colors {
     public static void StampaMenu() {
         System.out.println(CYAN + "Inserisci il numero corrispondente all'azione che vuoi eseguire: " + RESET);
@@ -15,7 +10,7 @@ public class Stampa implements Colors {
                         GREEN + "\n2: " + RESET + "Registra un'azienda." +
                         GREEN + "\n3: " + RESET + "Inserisci offerta." +
                         GREEN + "\n4: " + RESET + "Annulla offerta." +
-                        GREEN + "\n5: " + RESET + "Ricerca tirocini" +
+                        GREEN + "\n5: " + RESET + "Ricerca tirocini in corso" +
                         GREEN + "\n6: " + RESET + "Ricerca tirocini con criteri" +
                         GREEN + "\n7: " + RESET + "Classifica delle aziende" +
                         GREEN + "\n8: " + RESET + "Classifica dei tutor universitari" +
