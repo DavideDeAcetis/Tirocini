@@ -1,10 +1,8 @@
 import java.sql.*;
 import java.util.Scanner;
 
-import Functions.Liste;
-import Functions.Offerta;
+import Functions.*;
 import Utility.Colors;
-import Functions.Registrazione;
 import Utility.Stampa;
 
 class Tirocini implements Colors {
@@ -64,20 +62,41 @@ class Tirocini implements Colors {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
-                    case 5:
-
+                    case 5:     //Ricerca offerte
+                        try {
+                            Ricerca.ricerca_offerte(con);
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                        }
                         break;
-                    case 6:
-                        // Perform "encrypt number" case.
+                    case 6:     //Ricerca offerte con criteri
+                        try {
+                            Ricerca.ricerca_offerte_con_criteri(con);
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                        }
                         break;
-                    case 7:
-                        // Perform "decrypt number" case.
+                    case 7:     //Classifica offerte per numero di tirocini
+                        try {
+                            Classifica.classifica_aziende_tirocini(con);
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                        }
                         break;
-                    case 8:
-                        // Perform "quit" case.
+                    case 8:     //Classsifica offerte per gradimento
+                        try {
+                            //TODO: DA FARE LA PROCEDURE IN SQL
+                            Classifica.classifica_aziende_gradimento(con);
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                        }
                         break;
-                    case 9:
-                        // Perform "original number" case.
+                    case 9:     //Calssifica tutor universitari per tirocini
+                        try {
+                            Classifica.classifica_tutor_universitari(con);
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                        }
                         break;
                     case 10:
                         // Perform "encrypt number" case.
@@ -85,32 +104,39 @@ class Tirocini implements Colors {
                     case 11:
                         // Perform "decrypt number" case.
                         break;
-                    case 12:    //Ricerca tirocini in corso
+                    case 12:
+                        // Perform "decrypt number" case.
+                        break;
+                    case 13:    //Ricerca tirocini di uno studente
                         try {
-                            Liste.lista_storico_tirocini_studente(con);
+                            status = Liste.lista_storico_tirocini_studente(con);
+                            if (status == -1) {
+                                System.out.println(RED + "Operazione annullata dall'utente." + RESET);
+                            }
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
-                    case 13:    //lista aziende con offerte aperte
+                    case 14:    //lista aziende con offerte aperte
                         try {
                             Liste.lista_aziende(con);
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
-                    case 14:    //lista tirocini in corso
+                    case 15:    //lista tirocini in corso
                         try {
                             Liste.lista_tirocini_attivi(con);
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
-                    case 15:
-                        // Perform "decrypt number" case.
-                        break;
-                    case 16:
-
+                    case 16:    //lista tirocini scaduti
+                        try {
+                            Liste.lista_tirocini_scaduti(con);
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                        }
                         break;
                     default:
                         System.out.println(RED + "ERRORE: Input non valido" + RESET);
