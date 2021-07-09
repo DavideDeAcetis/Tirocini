@@ -34,13 +34,13 @@ public class Classifica implements Colors {
         System.out.println(CYAN + "Classifica delle aziende in base al gradimento degli studenti:" + RESET);
         System.out.println("---------------------------------------------------------------- ");
 
-        CallableStatement stmt = con.prepareCall("{CALL classifica_aziende()}");
+        CallableStatement stmt = con.prepareCall("{CALL classifica_aziende_feedback()}");
         stmt.execute();
         ResultSet rs = stmt.getResultSet();
 
         if (rs.next()) {
-            System.out.println("Posizione - Nome azienda - Numero tirocini");
-            System.out.println("------------------------------------------");
+            System.out.println("Posizione - Nome azienda - Feedback medio");
+            System.out.println("-----------------------------------------");
             do {
                 System.out.println(
                         rs.getString(1) + " - " +
