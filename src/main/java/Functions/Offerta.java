@@ -246,6 +246,7 @@ public class Offerta implements Colors {
             System.out.println(CYAN + "L'offerta selezionata è stata annullata con successo!" + RESET);
 
             con.commit();
+            con.setAutoCommit(true);
         } catch (SQLException e) {
             // in case of exception, rollback the transaction
             con.rollback();

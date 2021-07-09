@@ -1,8 +1,6 @@
 package Functions;
 
-import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.util.InputMismatchException;
+import java.sql.*;;
 import java.util.Scanner;
 
 import Utility.Colors;

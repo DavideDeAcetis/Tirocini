@@ -101,11 +101,26 @@ class Tirocini implements Colors {
                     case 10:
                         // Perform "encrypt number" case.
                         break;
-                    case 11:
-                        // Perform "decrypt number" case.
+                    case 11:        //chiusura di un tirocinio
+                        try {
+                            status = Tirocinio.chiusura_tirocinio(con);
+                            if (status == -1) {
+                                System.out.println(RED + "Operazione annullata dall'utente." + RESET);
+                            }
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                        }
                         break;
-                    case 12:
-                        // Perform "decrypt number" case.
+                    case 12:       //Inserimento feedback per un'azienda.
+                        try {
+                            status = Feedback.inserisci_feedback_azienda(con);
+                            if (status == -1) {
+                                System.out.println(RED + "Operazione annullata dall'utente." + RESET);
+                            }
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                            e.printStackTrace(System.out);
+                        }
                         break;
                     case 13:    //Ricerca tirocini di uno studente
                         try {
@@ -152,6 +167,7 @@ class Tirocini implements Colors {
             con.close();
         } catch (Exception e) {
             System.out.println(RED + "ERRORE: " + e + RESET);
+            e.printStackTrace(System.out);
         }
     }
 }
