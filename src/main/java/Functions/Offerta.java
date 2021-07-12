@@ -1,10 +1,10 @@
 package Functions;
 
+import Utility.Colors;
+
 import java.sql.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
-import Utility.Colors;
 
 public class Offerta implements Colors {
     private static class NoTirociniAttiviException extends Throwable {
@@ -12,7 +12,7 @@ public class Offerta implements Colors {
 
     public static int aggiungi_offerta(Connection con) throws SQLException {
         System.out.println(CYAN + "Menu per l'inserimento di una nuova offerta di tirocinio, inserisci" + RED + " 0 " + CYAN + "in qualsiasi momento per annullare la procedura." +
-                "\nI campi contrassegnati con " + RED + "*" + CYAN + " sono obligatori." + RESET);
+                "\nI campi contrassegnati con " + RED + "*" + CYAN + " sono obbligatori." + RESET);
         System.out.println(RED + "ATTENZIONE: " + CYAN + "L'azienda deve essere prima verificata per poter aggiungere un'offerta di tirocinio." + RESET);
         System.out.println("---------------------------------------------------------------- ");
 

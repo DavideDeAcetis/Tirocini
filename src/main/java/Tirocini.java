@@ -1,9 +1,10 @@
-import java.sql.*;
-import java.util.Scanner;
-
 import Functions.*;
 import Utility.Colors;
 import Utility.Stampa;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.Scanner;
 
 class Tirocini implements Colors {
     public static void main(String[] args) {
@@ -151,6 +152,17 @@ class Tirocini implements Colors {
                             Liste.lista_tirocini_scaduti(con);
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
+                        }
+                        break;
+                    case 17:       //Inserimento feedback per un'azienda.
+                        try {
+                            status = Feedback.inserisci_feedback_tirocinio(con);
+                            if (status == -1) {
+                                System.out.println(RED + "Operazione annullata dall'utente." + RESET);
+                            }
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                            e.printStackTrace(System.out);
                         }
                         break;
                     default:

@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class Registrazione {
     public static int registrazione_studente(Connection con) throws SQLException {
         System.out.println(Colors.CYAN + "Menu di registrazione di uno studente, inserisci" + Colors.RED + " 0 " + Colors.CYAN + "in qualsiasi momento per annullare la procedura." +
-                "\nI campi contrassegnati con " + Colors.RED + "*" + Colors.CYAN + " sono obligatori." + Colors.RESET);
+                "\nI campi contrassegnati con " + Colors.RED + "*" + Colors.CYAN + " sono obbligatori." + Colors.RESET);
         System.out.println("---------------------------------------------------------------- ");
 
         CallableStatement stmt = con.prepareCall("{? = CALL registrazione_studente(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
@@ -195,7 +195,7 @@ public class Registrazione {
 
     public static int registrazione_azienda(Connection con) throws SQLException {
         System.out.println(Colors.CYAN + "Menu di registrazione di un'azienda, inserisci" + Colors.RED + " 0 " + Colors.CYAN + "in qualsiasi momento per annullare la procedura." +
-                "\nI campi contrassegnati con " + Colors.RED + "*" + Colors.CYAN + " sono obligatori." + Colors.RESET);
+                "\nI campi contrassegnati con " + Colors.RED + "*" + Colors.CYAN + " sono obbligatori." + Colors.RESET);
         System.out.println("---------------------------------------------------------------- ");
 
         CallableStatement stmt = con.prepareCall("{? = CALL registrazione_azienda(?,?,?,?,?,?,?,?,?,?,?,?)}");

@@ -10,7 +10,7 @@ public class Tirocinio implements Colors {
     public static int attivazione_tirocinio(Connection con) throws SQLException {
         System.out.println(CYAN + "Menu per l'attivazione di una tirocinio. " +
                 "\nInserire" + RED + " 0 " + CYAN + "in qualsiasi momento per annullare la procedura." +
-                "\nI campi contrassegnati con " + RED + "*" + CYAN + " sono obligatori." + RESET);
+                "\nI campi contrassegnati con " + RED + "*" + CYAN + " sono obbligatori." + RESET);
         System.out.println("---------------------------------------------------------------- ");
 
         CallableStatement stmt = con.prepareCall("{? = CALL attiva_tirocinio(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
@@ -30,7 +30,7 @@ public class Tirocinio implements Colors {
     public static int chiusura_tirocinio(Connection con) throws SQLException {
         System.out.println(CYAN + "Menu per la chiusura di un tirocinio. " +
                 "\nInserire" + RED + " 0 " + CYAN + "in qualsiasi momento per annullare la procedura." +
-                "\nI campi contrassegnati con " + RED + "*" + CYAN + " sono obligatori." + RESET);
+                "\nI campi contrassegnati con " + RED + "*" + CYAN + " sono obbligatori." + RESET);
         System.out.println("---------------------------------------------------------------- ");
         CallableStatement stmt;
 
