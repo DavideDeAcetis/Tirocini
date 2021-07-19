@@ -10,7 +10,7 @@ class Tirocini implements Colors {
     public static void main(String[] args) {
         try {
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tirocini?noAccessToProcedureBodies=true&serverTimezone=Europe/Rome", "root", "Polipetto89&");
+                    "jdbc:mysql://localhost:3306/tirocini?noAccessToProcedureBodies=true&serverTimezone=Europe/Rome", "root","ciao123");
 
             boolean exit = false;
             while (!exit) {

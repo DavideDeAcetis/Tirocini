@@ -27,12 +27,15 @@ public class Tirocinio implements Colors {
             CallableStatement stmt1 = con.prepareCall("{CALL ricerca_offerte('', '',0 ,10000 ,10000 )}");
             stmt1.execute();
             ResultSet rs = stmt1.getResultSet();
+            ArrayList<Integer> id_tirocini = new ArrayList<>();
+
             if (rs.next()) {
+                int count = 1;
                 System.out.println("Numero da inserire - Titolo - Sede - Durata - Posti disponibili - Obiettivi - CFU");
-                System.out.println("-------------------------");
+                System.out.println("---------------------------------------------------------------------------------");
                 do {
                     System.out.println(
-                            rs.getString(1) + "    -    " +
+                            count++ + "    -    " +
                                     rs.getString(3) + " - " +
                                     rs.getString(4) + " - " +
                                     rs.getString(5) + " - " +
@@ -40,28 +43,36 @@ public class Tirocinio implements Colors {
                                     rs.getString(7) + " - " +
                                     rs.getString(8)
                     );
+                    id_tirocini.add(rs.getInt("id"));
                 } while (rs.next());
             }
             input = scanner.nextLine();
-            if (input.equalsIgnoreCase("0")) {
+            int posizione_id = Integer.parseInt(input);
+            if (posizione_id == 0) {
                 return -1;
             } //controlla se si sia inserito un numero valido
-                stmt1.execute();
-                rs = stmt1.getResultSet();
-                if (rs.next()) {
-                    do {
-                       if(rs.getString(1).equalsIgnoreCase(input)) {
-                           inputOk = true;
-                           stmt.setString(6, input);
-                       }
-                    } while (rs.next());
 
-            }
-                if(!inputOk) {
-                    System.out.println(Colors.GREEN + "Dato selezionato non valido, scegliere uno dei numeri proposti" + Colors.RESET);
+            stmt1.execute();
+            rs = stmt1.getResultSet();
+            try {
+                if (rs.next()) {
+                    int id = id_tirocini.get(posizione_id);
+                    do {
+                        if (rs.getInt(1) == (id)) {
+                            stmt.setInt(6, id);
+                            inputOk = true;
+                            break;
+                        }
+                    } while (rs.next());
                 }
+                if (!inputOk) {
+                    System.out.println(Colors.RED + "Dato selezionato non valido, scegliere uno dei numeri proposti" + Colors.RESET);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(Colors.RED + "Inserire un valore numerico valido." + Colors.RESET);
+            }
         }
-        inputOk=false;
+        inputOk = false;
 
         while (!inputOk) {
             System.out.println(Colors.GREEN + "Inserisci matricola studente:" + Colors.RED + "*" + Colors.RESET);
@@ -97,7 +108,7 @@ public class Tirocinio implements Colors {
                     throw new InputMismatchException();
                 }
                 inputOk = true;
-            } catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 System.out.println(Colors.RED + "ERRORE: Il codice fiscale deve contenere 16 caratteri." + Colors.RESET);
             }
         }
@@ -112,7 +123,7 @@ public class Tirocinio implements Colors {
                 }
                 Integer.parseInt(input);
                 if (input.length() == 6) {
-                    matricolaTu=input;
+                    matricolaTu = input;
                 } else {
                     throw new InputMismatchException();
                 }
@@ -124,14 +135,16 @@ public class Tirocinio implements Colors {
             }
         }
         inputOk = false;
-        String querySelect= "SELECT * FROM tirocini.tutor_universitario WHERE matricola = ?";
+
+        String querySelect = "SELECT * FROM tirocini.tutor_universitario WHERE matricola = ?";
         PreparedStatement stmt2 = con.prepareStatement(querySelect);
-        stmt2.setString(1,matricolaTu);
-        ResultSet rs= stmt2.executeQuery();
-        if(!(rs.next())){
-            System.out.println(Colors.GREEN +"Tutor universitario non registrato. Vuoi registrare il tutor universitario? 1 continuare 0 annullare"+ Colors.RESET);
+        stmt2.setString(1, matricolaTu);
+        ResultSet rs = stmt2.executeQuery();
+
+        if (!(rs.next())) {
+            System.out.println(Colors.CYAN + "Tutor universitario non registrato. Vuoi registrare il tutor universitario? 1 continuare 0 annullare" + Colors.RESET);
             input = scanner.nextLine();
-            if(input.equalsIgnoreCase("1")){
+            if (input.equalsIgnoreCase("1")) {
                 CallableStatement stmt3 = con.prepareCall("{? = CALL registra_tutor_universitario(?,?,?,?,?,?)}");
                 stmt3.registerOutParameter(1, Types.INTEGER);
 
@@ -162,7 +175,7 @@ public class Tirocinio implements Colors {
                             throw new InputMismatchException();
                         }
                         inputOk = true;
-                    } catch (InputMismatchException e){
+                    } catch (InputMismatchException e) {
                         System.out.println(Colors.RED + "ERRORE: Il codice fiscale deve contenere 16 caratteri." + Colors.RESET);
                     }
                 }
@@ -189,11 +202,9 @@ public class Tirocinio implements Colors {
                 stmt.setString(7, matricolaTu);
             }
 
-        }else {
+        } else {
             stmt.setString(7, matricolaTu);
         }
-
-
 
         while (!inputOk) {
             System.out.println(Colors.GREEN + "Inserisci la data di inizio tirocinio (aaaa/mm/gg):" + Colors.RED + "*" + Colors.RESET);
@@ -235,20 +246,17 @@ public class Tirocinio implements Colors {
 
         System.out.println(Colors.GREEN + "Inserisci le ore effettive di tirocinio" + Colors.RED + "*" + Colors.RESET);
         input = scanner.nextLine();
-            if (input.equalsIgnoreCase("0")) {
-                return -1;
-            } else {
-
-                stmt.setString(4, input);
-            }
-
+        if (input.equalsIgnoreCase("0")) {
+            return -1;
+        } else {
+            stmt.setString(4, input);
+        }
 
         stmt.execute();
         int studente_id = stmt.getInt(1);
         stmt.close();
         System.out.println(CYAN + "Attivazione del tirocinio completata con successo!" + RESET);
         return studente_id;
-
     }
 
 
@@ -383,5 +391,7 @@ public class Tirocinio implements Colors {
         }
         return 0;
     }
-    private static class GiudizioErratoException extends Throwable { }
+
+    private static class GiudizioErratoException extends Throwable {
+    }
 }
