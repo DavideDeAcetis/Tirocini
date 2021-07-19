@@ -14,12 +14,11 @@ public class Ricerca implements Colors {
         stmt.execute();
         ResultSet rs = stmt.getResultSet();
         if (rs.next()) {
-            System.out.println("ID - Data creazione - Titolo - Sede - Durata - Posti disponibili - Cfu - Obiettivi");
-            System.out.println("-----------------------------------------------------------------------------------------------------");
+            System.out.println("Data creazione - Titolo - Sede - Durata - Posti disponibili - Cfu - Obiettivi");
+            System.out.println("-----------------------------------------------------------------------------");
             do {
                 System.out.println(
-                        rs.getString(1) + " - " +
-                                rs.getString(2) + " - " +
+                        rs.getString(2) + " - " +
                                 rs.getString(3) + " - " +
                                 rs.getString(4) + " - " +
                                 rs.getString(5) + " - " +
@@ -49,7 +48,7 @@ public class Ricerca implements Colors {
         input = scanner.nextLine();
         if (input.equalsIgnoreCase("0")) {
             return -1;
-        } else if (input.equalsIgnoreCase("")){
+        } else if (input.equalsIgnoreCase("")) {
             stmt.setString(1, null);
         } else {
             stmt.setString(1, input);
@@ -60,7 +59,7 @@ public class Ricerca implements Colors {
         input = scanner.nextLine();
         if (input.equalsIgnoreCase("0")) {
             return -1;
-        } else if (input.equalsIgnoreCase("")){
+        } else if (input.equalsIgnoreCase("")) {
             stmt.setString(2, null);
         } else {
             stmt.setString(2, input);
@@ -72,12 +71,12 @@ public class Ricerca implements Colors {
             try {
                 if (input.equalsIgnoreCase("0")) {
                     return -1;
-                } else if (input.equalsIgnoreCase("")){
+                } else if (input.equalsIgnoreCase("")) {
                     stmt.setString(3, null);
                 } else {
                     stmt.setString(3, input);
                 }
-                    inputOk = true;
+                inputOk = true;
             } catch (Exception e) {
                 System.out.println(Colors.RED + "ERRORE: Inserire un numero." + Colors.RESET);
             }
@@ -90,12 +89,12 @@ public class Ricerca implements Colors {
             try {
                 if (input.equalsIgnoreCase("0")) {
                     return -1;
-                } else if (input.equalsIgnoreCase("")){
+                } else if (input.equalsIgnoreCase("")) {
                     stmt.setString(4, null);
                 } else {
                     stmt.setString(4, input);
                 }
-                    inputOk = true;
+                inputOk = true;
             } catch (Exception e) {
                 System.out.println(Colors.RED + "ERRORE: Inserire un numero." + Colors.RESET);
             }
@@ -108,12 +107,12 @@ public class Ricerca implements Colors {
             try {
                 if (input.equalsIgnoreCase("0")) {
                     return -1;
-                } else if (input.equalsIgnoreCase("")){
+                } else if (input.equalsIgnoreCase("")) {
                     stmt.setString(5, null);
                 } else {
                     stmt.setString(5, input);
                 }
-                    inputOk = true;
+                inputOk = true;
             } catch (Exception e) {
                 System.out.println(Colors.RED + "ERRORE: Inserire un numero." + Colors.RESET);
             }

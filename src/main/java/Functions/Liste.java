@@ -126,14 +126,16 @@ public class Liste implements Colors {
         ResultSet rs2 = stmt2.getResultSet();
         if (rs2.next()) {
             System.out.println(CYAN + "Ecco la lista dei tirocini conclusi da " + rs2.getString(1) + RESET);
-            System.out.println("Titolo offerta - Nome azienda - Inizio - Fine");
-            System.out.println("----------------------------------------------");
+            System.out.println("Nome studente - Matricola - Titolo offerta - Nome azienda - Inizio - Fine");
+            System.out.println("-------------------------------------------------------------------------");
             do {
                 System.out.println(
                         rs2.getString(1) + " - " +
                                 rs2.getString(2) + " - " +
                                 rs2.getString(3) + " - " +
-                                rs2.getString(4)
+                                rs2.getString(4) + " - " +
+                                rs2.getString(5) + " - " +
+                                rs2.getString(6)
                 );
             }
             while (rs2.next());

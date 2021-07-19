@@ -19,7 +19,7 @@ public class Feedback implements Colors {
         Scanner scanner = new Scanner(System.in);
         String input;
         boolean inputOk = false;
-        ArrayList<String> lista_id_aziende = new ArrayList<>();
+        ArrayList<Integer> lista_id_aziende = new ArrayList<>();
         int studente_id;
 
         System.out.println(GREEN + "Inserisci matricola studente" + RED + "*" + RESET);
@@ -48,7 +48,7 @@ public class Feedback implements Colors {
                             count++ + ") " +
                                     rs.getString(2)
                     );
-                    lista_id_aziende.add(rs.getString("id"));
+                    lista_id_aziende.add(rs.getInt("id"));
                 } while (rs.next());
             } else {
                 System.out.println(RED + "Non ci sono aziende per cui inserire il feedback" + RESET);
@@ -64,17 +64,14 @@ public class Feedback implements Colors {
                 } else if (Integer.parseInt(input) - 1 < lista_id_aziende.size()) {
                     stmt = con.prepareCall("{CALL aggiungi_feedback_azienda(?,?,?)}");
                     stmt.setInt(1, studente_id);
-                    stmt.setString(2, lista_id_aziende.get(Integer.parseInt(input) - 1));
+                    stmt.setInt(2, lista_id_aziende.get(Integer.parseInt(input) - 1));
 
                     while (!inputOk) {
                         System.out.println(GREEN + "Inserisci il feedback:" + RED + "*" + RESET);
                         input = scanner.nextLine();
                         try {
-                            if (input.equalsIgnoreCase("0")) {
-                                return -1;
-                            }
                             if (Integer.parseInt(input) >= 0 && Integer.parseInt(input) <= 5) {
-                                stmt.setString(3, input);
+                                stmt.setInt(3, Integer.parseInt(input));
                             } else {
                                 throw new InputMismatchException();
                             }
@@ -91,6 +88,7 @@ public class Feedback implements Colors {
                 System.out.println(RED + "ERRORE: Inserire solo cifre numeriche." + RESET);
             }
         }
+
         stmt.execute();
         stmt.close();
         System.out.println(CYAN + "Feedback aggiunto con successo!" + RESET);

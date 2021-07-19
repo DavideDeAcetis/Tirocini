@@ -47,10 +47,7 @@ public class Tirocinio implements Colors {
                 } while (rs.next());
             }
             input = scanner.nextLine();
-            int posizione_id = Integer.parseInt(input);
-            if (posizione_id == 0) {
-                return -1;
-            } //controlla se si sia inserito un numero valido
+            int posizione_id = Integer.parseInt(input)-1;
 
             stmt1.execute();
             rs = stmt1.getResultSet();
@@ -81,7 +78,7 @@ public class Tirocinio implements Colors {
                 if (input.equalsIgnoreCase("0")) {
                     return -1;
                 }
-                Integer.parseInt(input);
+                Long.parseLong(input);
                 if (input.length() == 6) {
                     stmt.setString(5, input);
                 } else {
@@ -121,7 +118,7 @@ public class Tirocinio implements Colors {
                 if (input.equalsIgnoreCase("0")) {
                     return -1;
                 }
-                Integer.parseInt(input);
+                Long.parseLong(input);
                 if (input.length() == 6) {
                     matricolaTu = input;
                 } else {
@@ -244,7 +241,7 @@ public class Tirocinio implements Colors {
         }
         inputOk = false;
 
-        System.out.println(Colors.GREEN + "Inserisci le ore effettive di tirocinio" + Colors.RED + "*" + Colors.RESET);
+        System.out.println(Colors.GREEN + "Inserisci le ore di tirocinio previste:" + Colors.RED + "*" + Colors.RESET);
         input = scanner.nextLine();
         if (input.equalsIgnoreCase("0")) {
             return -1;

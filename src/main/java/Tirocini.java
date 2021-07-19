@@ -86,7 +86,6 @@ class Tirocini implements Colors {
                         break;
                     case 8:     //Classsifica offerte per gradimento
                         try {
-                            //TODO: DA FARE LA PROCEDURE IN SQL
                             Classifica.classifica_aziende_gradimento(con);
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
@@ -127,7 +126,6 @@ class Tirocini implements Colors {
                             }
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
-                            e.printStackTrace(System.out);
                         }
                         break;
                     case 13:    //Ricerca tirocini di uno studente
