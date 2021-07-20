@@ -10,7 +10,7 @@ class Tirocini implements Colors {
     public static void main(String[] args) {
         try {
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tirocini?noAccessToProcedureBodies=true&serverTimezone=Europe/Rome", "root","Polipetto89&");
+                    "jdbc:mysql://localhost:3306/tirocini?noAccessToProcedureBodies=true&serverTimezone=Europe/Rome", "root","ciao123");
 
             boolean exit = false;
             while (!exit) {
@@ -96,7 +96,6 @@ class Tirocini implements Colors {
                             Classifica.classifica_aziende_gradimento_tirocini(con);
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
-                            e.printStackTrace(System.out);
                         }
                     case 10:     //Calssifica tutor universitari per tirocini
                         try {
@@ -113,7 +112,6 @@ class Tirocini implements Colors {
                             }
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
-                            e.printStackTrace(System.out);
                         }
                             break;
                     case 12:        //chiusura di un tirocinio
@@ -144,7 +142,6 @@ class Tirocini implements Colors {
                             }
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
-                            e.printStackTrace(System.out);
                         }
                         break;
                     case 15:    //Ricerca tirocini di uno studente
@@ -192,7 +189,6 @@ class Tirocini implements Colors {
             con.close();
         } catch (Exception e) {
             System.out.println(RED + "ERRORE: " + e + RESET);
-            e.printStackTrace(System.out);
         }
     }
 }
