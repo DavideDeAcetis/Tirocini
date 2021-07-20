@@ -10,7 +10,7 @@ class Tirocini implements Colors {
     public static void main(String[] args) {
         try {
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tirocini?noAccessToProcedureBodies=true&serverTimezone=Europe/Rome", "root","ciao123");
+                    "jdbc:mysql://localhost:3306/tirocini?noAccessToProcedureBodies=true&serverTimezone=Europe/Rome", "root","Polipetto89&");
 
             boolean exit = false;
             while (!exit) {
@@ -113,8 +113,9 @@ class Tirocini implements Colors {
                             }
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
+                            e.printStackTrace(System.out);
                         }
-                        break;
+                            break;
                     case 12:        //chiusura di un tirocinio
                         try {
                             status = Tirocinio.chiusura_tirocinio(con);

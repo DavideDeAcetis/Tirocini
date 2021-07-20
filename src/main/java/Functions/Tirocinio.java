@@ -14,7 +14,7 @@ public class Tirocinio implements Colors {
                 "\nInserire" + RED + " 0 " + CYAN + "in qualsiasi momento per annullare la procedura." +
                 "\nI campi contrassegnati con " + RED + "*" + CYAN + " sono obbligatori." + RESET);
         System.out.println("---------------------------------------------------------------- ");
-
+        int id=0;
         CallableStatement stmt = con.prepareCall("{? = CALL attiva_tirocinio(?,?,?,?,?,?,?)}");
         stmt.registerOutParameter(1, Types.INTEGER);
 
@@ -47,13 +47,13 @@ public class Tirocinio implements Colors {
                 } while (rs.next());
             }
             input = scanner.nextLine();
-            int posizione_id = Integer.parseInt(input)-1;
+            int posizione_id = Integer.parseInt(input) - 1;
 
             stmt1.execute();
             rs = stmt1.getResultSet();
             try {
                 if (rs.next()) {
-                    int id = id_tirocini.get(posizione_id);
+                    id = id_tirocini.get(posizione_id);
                     do {
                         if (rs.getInt(1) == (id)) {
                             stmt.setInt(6, id);
@@ -92,15 +92,16 @@ public class Tirocinio implements Colors {
             }
         }
         inputOk = false;
+        String codicefiscale = null;
         while (!inputOk) {
-            System.out.println(Colors.GREEN + "Inserisci codice fiscale tutor aziendale:" + Colors.RED + "*" + Colors.RESET);
+            System.out.println(Colors.GREEN + "Inserisci codice fiscale tutor_universitario:" + Colors.RED + "*" + Colors.RESET);
             input = scanner.nextLine();
             try {
                 if (input.equalsIgnoreCase("0")) {
                     return -1;
                 }
                 if (input.length() == 16) {
-                    stmt.setString(8, input);
+                    codicefiscale = input;
                 } else {
                     throw new InputMismatchException();
                 }
@@ -110,39 +111,22 @@ public class Tirocinio implements Colors {
             }
         }
         inputOk = false;
-        String matricolaTu = null;
-        while (!inputOk) {
-            System.out.println(Colors.GREEN + "Inserisci matricola tutor universitario:" + Colors.RED + "*" + Colors.RESET);
-            input = scanner.nextLine();
-            try {
-                if (input.equalsIgnoreCase("0")) {
-                    return -1;
-                }
-                Long.parseLong(input);
-                if (input.length() == 6) {
-                    matricolaTu = input;
-                } else {
-                    throw new InputMismatchException();
-                }
-                inputOk = true;
-            } catch (NumberFormatException e) {
-                System.out.println(Colors.RED + "ERRORE: La matricola deve contenere solo cifre numeriche." + Colors.RESET);
-            } catch (InputMismatchException e) {
-                System.out.println(Colors.RED + "ERRORE: La matricola deve contenere 6 cifre numeriche." + Colors.RESET);
-            }
-        }
-        inputOk = false;
 
-        String querySelect = "SELECT * FROM tirocini.tutor_universitario WHERE matricola = ?";
+        String querySelect = "SELECT * FROM tirocini.tutor_aziendale WHERE codfiscale = ?";
         PreparedStatement stmt2 = con.prepareStatement(querySelect);
-        stmt2.setString(1, matricolaTu);
+        stmt2.setString(1, codicefiscale);
         ResultSet rs = stmt2.executeQuery();
-
+        String querySelect1 = "SELECT o.azienda_id AS azienda_id FROM tirocini.offerta o WHERE o.id = ?";
+        PreparedStatement stmt5 = con.prepareStatement(querySelect1);
+        stmt5.setString(1, Integer.toString(id));
+        ResultSet rs1 = stmt5.executeQuery();
+        rs1.next();
+        int azienda_id= rs1.getInt("azienda_id");
         if (!(rs.next())) {
-            System.out.println(Colors.CYAN + "Tutor universitario non registrato. Vuoi registrare il tutor universitario? 1 continuare 0 annullare" + Colors.RESET);
+            System.out.println(Colors.CYAN + "Tutor aziendale non registrato. Vuoi registrare il tutor aziendale? 1 continuare 0 annullare" + Colors.RESET);
             input = scanner.nextLine();
             if (input.equalsIgnoreCase("1")) {
-                CallableStatement stmt3 = con.prepareCall("{? = CALL registra_tutor_universitario(?,?,?,?,?,?)}");
+                CallableStatement stmt3 = con.prepareCall("{? = CALL registra_tutor_aziendale(?,?,?,?,?,?)}");
                 stmt3.registerOutParameter(1, Types.INTEGER);
 
                 System.out.println(Colors.GREEN + "Inserisci nome" + Colors.RED + "*" + Colors.RESET);
@@ -159,102 +143,180 @@ public class Tirocinio implements Colors {
                 } else {
                     stmt3.setString(3, input);
                 }
-                while (!inputOk) {
-                    System.out.println(Colors.GREEN + "Inserisci codice fiscale:" + Colors.RED + "*" + Colors.RESET);
-                    input = scanner.nextLine();
-                    try {
-                        if (input.equalsIgnoreCase("0")) {
-                            return -1;
-                        }
-                        if (input.length() == 16) {
-                            stmt3.setString(5, input);
-                        } else {
-                            throw new InputMismatchException();
-                        }
-                        inputOk = true;
-                    } catch (InputMismatchException e) {
-                        System.out.println(Colors.RED + "ERRORE: Il codice fiscale deve contenere 16 caratteri." + Colors.RESET);
-                    }
-                }
-                inputOk = false;
-                stmt3.setString(4, matricolaTu);
-                System.out.println(Colors.GREEN + "Inserisci email tutor universitario:" + Colors.RED + "*" + Colors.RESET);
+
+                stmt3.setString(4, codicefiscale);
+                System.out.println(Colors.GREEN + "Inserisci telefono tutor aziendale " + Colors.RESET);
                 input = scanner.nextLine();
                 if (input.equalsIgnoreCase("0")) {
                     return -1;
                 } else {
-                    stmt3.setString(7, input);
+                    stmt3.setString(5, input);
                 }
-                System.out.println(Colors.GREEN + "Inserisci telefono tutor universitario " + Colors.RESET);
+
+                System.out.println(Colors.GREEN + "Inserisci email tutor aziendale:" + Colors.RED + "*" + Colors.RESET);
                 input = scanner.nextLine();
                 if (input.equalsIgnoreCase("0")) {
                     return -1;
                 } else {
                     stmt3.setString(6, input);
                 }
+                System.out.println(azienda_id);
+                stmt3.setInt(7, azienda_id);
                 stmt3.execute();
-                int tutor_id = stmt3.getInt(1);
-                stmt3.close();
-                System.out.println(CYAN + "Registrazione tutor universitario completata con successo!" + RESET);
+                System.out.println(CYAN + "Registrazione tutor aziendale completata con successo!" + RESET);
+                stmt.setString(8, codicefiscale);
+
+            } else {
+                stmt.setString(8, codicefiscale);
+            }
+        }
+            String matricolaTu = null;
+            while (!inputOk) {
+                System.out.println(Colors.GREEN + "Inserisci matricola tutor universitario:" + Colors.RED + "*" + Colors.RESET);
+                input = scanner.nextLine();
+                try {
+                    if (input.equalsIgnoreCase("0")) {
+                        return -1;
+                    }
+                    Long.parseLong(input);
+                    if (input.length() == 6) {
+                        matricolaTu = input;
+                    } else {
+                        throw new InputMismatchException();
+                    }
+                    inputOk = true;
+                } catch (NumberFormatException e) {
+                    System.out.println(Colors.RED + "ERRORE: La matricola deve contenere solo cifre numeriche." + Colors.RESET);
+                } catch (InputMismatchException e) {
+                    System.out.println(Colors.RED + "ERRORE: La matricola deve contenere 6 cifre numeriche." + Colors.RESET);
+                }
+            }
+            inputOk = false;
+
+            querySelect = "SELECT * FROM tirocini.tutor_universitario WHERE matricola = ?";
+            stmt2 = con.prepareStatement(querySelect);
+            stmt2.setString(1, matricolaTu);
+            rs = stmt2.executeQuery();
+
+            if (!(rs.next())) {
+                System.out.println(Colors.CYAN + "Tutor universitario non registrato. Vuoi registrare il tutor universitario? 1 continuare 0 annullare" + Colors.RESET);
+                input = scanner.nextLine();
+                if (input.equalsIgnoreCase("1")) {
+                    CallableStatement stmt3 = con.prepareCall("{? = CALL registra_tutor_universitario(?,?,?,?,?,?)}");
+                    stmt3.registerOutParameter(1, Types.INTEGER);
+
+                    System.out.println(Colors.GREEN + "Inserisci nome" + Colors.RED + "*" + Colors.RESET);
+                    input = scanner.nextLine();
+                    if (input.equalsIgnoreCase("0")) {
+                        return -1;
+                    } else {
+                        stmt3.setString(2, input);
+                    }
+                    System.out.println(Colors.GREEN + "Inserisci cognome" + Colors.RED + "*" + Colors.RESET);
+                    input = scanner.nextLine();
+                    if (input.equalsIgnoreCase("0")) {
+                        return -1;
+                    } else {
+                        stmt3.setString(3, input);
+                    }
+                    while (!inputOk) {
+                        System.out.println(Colors.GREEN + "Inserisci codice fiscale:" + Colors.RED + "*" + Colors.RESET);
+                        input = scanner.nextLine();
+                        try {
+                            if (input.equalsIgnoreCase("0")) {
+                                return -1;
+                            }
+                            if (input.length() == 16) {
+                                stmt3.setString(5, input);
+                            } else {
+                                throw new InputMismatchException();
+                            }
+                            inputOk = true;
+                        } catch (InputMismatchException e) {
+                            System.out.println(Colors.RED + "ERRORE: Il codice fiscale deve contenere 16 caratteri." + Colors.RESET);
+                        }
+                    }
+                    inputOk = false;
+                    stmt3.setString(4, matricolaTu);
+                    System.out.println(Colors.GREEN + "Inserisci email tutor universitario:" + Colors.RED + "*" + Colors.RESET);
+                    input = scanner.nextLine();
+                    if (input.equalsIgnoreCase("0")) {
+                        return -1;
+                    } else {
+                        stmt3.setString(7, input);
+                    }
+                    System.out.println(Colors.GREEN + "Inserisci telefono tutor universitario " + Colors.RESET);
+                    input = scanner.nextLine();
+                    if (input.equalsIgnoreCase("0")) {
+                        return -1;
+                    } else {
+                        stmt3.setString(6, input);
+                    }
+                    stmt3.execute();
+                    int tutor_id = stmt3.getInt(1);
+                    stmt3.close();
+                    System.out.println(CYAN + "Registrazione tutor universitario completata con successo!" + RESET);
+                    stmt.setString(7, matricolaTu);
+                }
+
+            } else {
                 stmt.setString(7, matricolaTu);
             }
 
-        } else {
-            stmt.setString(7, matricolaTu);
-        }
 
-        while (!inputOk) {
-            System.out.println(Colors.GREEN + "Inserisci la data di inizio tirocinio (aaaa/mm/gg):" + Colors.RED + "*" + Colors.RESET);
-            input = scanner.nextLine();
-            try {
-                if (input.equalsIgnoreCase("0")) {
-                    return -1;
-                } else {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-                    dateFormat.setLenient(false);
-                    dateFormat.parse(input.trim());
-                    stmt.setString(2, input);
-                    inputOk = true;
+            while (!inputOk) {
+                System.out.println(Colors.GREEN + "Inserisci la data di inizio tirocinio (aaaa/mm/gg):" + Colors.RED + "*" + Colors.RESET);
+                input = scanner.nextLine();
+                try {
+                    if (input.equalsIgnoreCase("0")) {
+                        return -1;
+                    } else {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                        dateFormat.setLenient(false);
+                        dateFormat.parse(input.trim());
+                        stmt.setString(2, input);
+                        inputOk = true;
+                    }
+                } catch (Exception e) {
+                    System.out.println(Colors.RED + "ERRORE: La data inserita non è corretta, il formato deve essere: (aaaa/mm/gg)." + Colors.RESET);
                 }
-            } catch (Exception e) {
-                System.out.println(Colors.RED + "ERRORE: La data inserita non è corretta, il formato deve essere: (aaaa/mm/gg)." + Colors.RESET);
             }
-        }
-        inputOk = false;
+            inputOk = false;
 
-        while (!inputOk) {
-            System.out.println(Colors.GREEN + "Inserisci la data di fine tirocinio (aaaa/mm/gg):" + Colors.RED + "*" + Colors.RESET);
-            input = scanner.nextLine();
-            try {
-                if (input.equalsIgnoreCase("0")) {
-                    return -1;
-                } else {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-                    dateFormat.setLenient(false);
-                    dateFormat.parse(input.trim());
-                    stmt.setString(3, input);
-                    inputOk = true;
+            while (!inputOk) {
+                System.out.println(Colors.GREEN + "Inserisci la data di fine tirocinio (aaaa/mm/gg):" + Colors.RED + "*" + Colors.RESET);
+                input = scanner.nextLine();
+                try {
+                    if (input.equalsIgnoreCase("0")) {
+                        return -1;
+                    } else {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                        dateFormat.setLenient(false);
+                        dateFormat.parse(input.trim());
+                        stmt.setString(3, input);
+                        inputOk = true;
+                    }
+                } catch (Exception e) {
+                    System.out.println(Colors.RED + "ERRORE: La data inserita non è corretta, il formato deve essere: (aaaa/mm/gg)." + Colors.RESET);
                 }
-            } catch (Exception e) {
-                System.out.println(Colors.RED + "ERRORE: La data inserita non è corretta, il formato deve essere: (aaaa/mm/gg)." + Colors.RESET);
             }
-        }
-        inputOk = false;
+            inputOk = false;
 
-        System.out.println(Colors.GREEN + "Inserisci le ore di tirocinio previste:" + Colors.RED + "*" + Colors.RESET);
-        input = scanner.nextLine();
-        if (input.equalsIgnoreCase("0")) {
-            return -1;
-        } else {
-            stmt.setString(4, input);
+            System.out.println(Colors.GREEN + "Inserisci le ore di tirocinio previste:" + Colors.RED + "*" + Colors.RESET);
+            input = scanner.nextLine();
+            if (input.equalsIgnoreCase("0")) {
+                return -1;
+            } else {
+                stmt.setString(4, input);
+            }
+
+            stmt.execute();
+            int studente_id = stmt.getInt(1);
+            stmt.close();
+            System.out.println(CYAN + "Attivazione del tirocinio completata con successo!" + RESET);
+            return studente_id;
         }
 
-        stmt.execute();
-        int studente_id = stmt.getInt(1);
-        stmt.close();
-        System.out.println(CYAN + "Attivazione del tirocinio completata con successo!" + RESET);
-        return studente_id;
-    }
 
 
     public static int chiusura_tirocinio(Connection con) throws SQLException {
