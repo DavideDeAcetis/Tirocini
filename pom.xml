@@ -21,4 +21,9 @@
         <maven.compiler.target>15</maven.compiler.target>
     </properties>
 
+    <build>
+        <defaultGoal>compile</defaultGoal>
+    </build>
+
+
 </project>

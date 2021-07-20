@@ -91,14 +91,21 @@ class Tirocini implements Colors {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
-                    case 9:     //Calssifica tutor universitari per tirocini
+                    case 9:
+                        try {
+                            Classifica.classifica_aziende_gradimento_tirocini(con);
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                            e.printStackTrace(System.out);
+                        }
+                    case 10:     //Calssifica tutor universitari per tirocini
                         try {
                             Classifica.classifica_tutor_universitari(con);
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
-                    case 10:  //attivazione tirocinio
+                    case 11:  //attivazione tirocinio
                         try {
                             status = Tirocinio.attivazione_tirocinio(con);
                             if (status == -1) {
@@ -108,7 +115,7 @@ class Tirocini implements Colors {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
-                    case 11:        //chiusura di un tirocinio
+                    case 12:        //chiusura di un tirocinio
                         try {
                             status = Tirocinio.chiusura_tirocinio(con);
                             if (status == -1) {
@@ -118,7 +125,7 @@ class Tirocini implements Colors {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
-                    case 12:       //Inserimento feedback per un'azienda.
+                    case 13:       //Inserimento feedback per un azienda.
                         try {
                             status = Feedback.inserisci_feedback_azienda(con);
                             if (status == -1) {
@@ -128,7 +135,18 @@ class Tirocini implements Colors {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
-                    case 13:    //Ricerca tirocini di uno studente
+                    case 14:       //Inserimento feedback per un tirocinio.
+                        try {
+                            status = Feedback.inserisci_feedback_tirocinio(con);
+                            if (status == -1) {
+                                System.out.println(RED + "Operazione annullata dall'utente." + RESET);
+                            }
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                            e.printStackTrace(System.out);
+                        }
+                        break;
+                    case 15:    //Ricerca tirocini di uno studente
                         try {
                             status = Liste.lista_storico_tirocini_studente(con);
                             if (status == -1) {
@@ -138,36 +156,25 @@ class Tirocini implements Colors {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
-                    case 14:    //lista aziende con offerte aperte
+                    case 16:    //lista aziende con offerte aperte
                         try {
                             Liste.lista_aziende(con);
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
-                    case 15:    //lista tirocini in corso
+                    case 17:    //lista tirocini in corso
                         try {
                             Liste.lista_tirocini_attivi(con);
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
-                    case 16:    //lista tirocini scaduti
+                    case 18:    //lista tirocini scaduti
                         try {
                             Liste.lista_tirocini_scaduti(con);
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
-                        }
-                        break;
-                    case 17:       //Inserimento feedback per un'azienda.
-                        try {
-                            status = Feedback.inserisci_feedback_tirocinio(con);
-                            if (status == -1) {
-                                System.out.println(RED + "Operazione annullata dall'utente." + RESET);
-                            }
-                        } catch (Exception e) {
-                            System.out.println(RED + "ERRORE: " + e + RESET);
-                            e.printStackTrace(System.out);
                         }
                         break;
                     default:

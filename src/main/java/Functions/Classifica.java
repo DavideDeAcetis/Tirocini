@@ -29,7 +29,6 @@ public class Classifica implements Colors {
         }
     }
 
-    //TODO: DA FARE LA PROCEDURE IN SQL
     public static void classifica_aziende_gradimento(Connection con) throws SQLException {
         System.out.println(CYAN + "Classifica delle aziende in base al gradimento degli studenti:" + RESET);
         System.out.println("---------------------------------------------------------------- ");
@@ -41,6 +40,27 @@ public class Classifica implements Colors {
         if (rs.next()) {
             System.out.println("Posizione - Nome azienda - Feedback medio");
             System.out.println("-----------------------------------------");
+            do {
+                System.out.println(
+                        rs.getString(1) + " - " +
+                                rs.getString(2) + " - " +
+                                rs.getString(3)
+                );
+            } while (rs.next());
+        }
+    }
+
+    public static void classifica_aziende_gradimento_tirocini(Connection con) throws SQLException {
+        System.out.println(CYAN + "Classifica delle aziende in base al gradimento dei tirocini:" + RESET);
+        System.out.println("---------------------------------------------------------------- ");
+
+        CallableStatement stmt = con.prepareCall("{CALL classifica_aziende_feedback_tirocini()}");
+        stmt.execute();
+        ResultSet rs = stmt.getResultSet();
+
+        if (rs.next()) {
+            System.out.println("Posizione - Nome azienda - Feedback medio tirocini");
+            System.out.println("--------------------------------------------------  ");
             do {
                 System.out.println(
                         rs.getString(1) + " - " +
