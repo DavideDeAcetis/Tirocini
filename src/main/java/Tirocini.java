@@ -8,10 +8,8 @@ import java.util.Scanner;
 
 class Tirocini implements Colors {
     public static void main(String[] args) {
-        try {
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tirocini?noAccessToProcedureBodies=true&serverTimezone=Europe/Rome", "root","ciao123");
-
+        try (Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/tirocini?noAccessToProcedureBodies=true&serverTimezone=Europe/Rome", "root","ciao123")){
             boolean exit = false;
             while (!exit) {
                 Stampa.StampaMenu();
@@ -97,6 +95,7 @@ class Tirocini implements Colors {
                         } catch (Exception e) {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
+                        break;
                     case 10:     //Calssifica tutor universitari per tirocini
                         try {
                             Classifica.classifica_tutor_universitari(con);
@@ -175,6 +174,20 @@ class Tirocini implements Colors {
                             System.out.println(RED + "ERRORE: " + e + RESET);
                         }
                         break;
+                    case 19:    //convenziona un'azienda
+                        try {
+                            Convenzione.convenziona(con);
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                        }
+                        break;
+                    case 20:    //verifica un'azienda
+                        try {
+                            Convenzione.verifica(con);
+                        } catch (Exception e) {
+                            System.out.println(RED + "ERRORE: " + e + RESET);
+                        }
+                        break;
                     default:
                         System.out.println(RED + "ERRORE: Input non valido" + RESET);
                 }
@@ -186,7 +199,6 @@ class Tirocini implements Colors {
                     }
                 }
             }
-            con.close();
         } catch (Exception e) {
             System.out.println(RED + "ERRORE: " + e + RESET);
         }

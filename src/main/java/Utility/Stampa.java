@@ -23,7 +23,9 @@ public class Stampa implements Colors {
                                 GREEN + "\n15\t: " + RESET + "Lista tirocini svolti da uno studente." +
                                 GREEN + "\n16\t: " + RESET + "Lista delle aziende con offerte di tirocinio ancora aperte." +
                                 GREEN + "\n17\t: " + RESET + "Lista dei tirocini in corso." +
-                                GREEN + "\n18\t: " + RESET + "Lista dei tirocini che sono giunti a scadenza"
+                                GREEN + "\n18\t: " + RESET + "Lista dei tirocini che sono giunti a scadenza" +
+                                GREEN + "\n19\t: " + RESET + "Convenziona azienda" +
+                                GREEN + "\n20\t: " + RESET + "Verifica azienda"
         );
     }
 }

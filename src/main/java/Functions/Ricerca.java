@@ -121,11 +121,10 @@ public class Ricerca implements Colors {
         stmt.execute();
         ResultSet rs = stmt.getResultSet();
         if (rs.next()) {
-            System.out.println("ID - Data creazione - Titolo - Sede - Durata - Posti disponibili - Cfu - Obiettivi");
-            System.out.println("-----------------------------------------------------------------------------------------------------");
+            System.out.println("Data creazione - Titolo - Sede - Durata - Posti disponibili - Cfu - Obiettivi");
+            System.out.println("-----------------------------------------------------------------------------");
             do {
                 System.out.println(
-                        rs.getString(1) + " - " +
                                 rs.getString(2) + " - " +
                                 rs.getString(3) + " - " +
                                 rs.getString(4) + " - " +
