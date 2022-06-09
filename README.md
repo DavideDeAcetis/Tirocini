@@ -1,4 +1,4 @@
-# Scheletro progetto Java
+# Tirocini
 
 <div align="center">
   <b>Progetto dell’insegnamento di Laboratorio di Basi di dati</b>
